@@ -22,6 +22,9 @@ public:
 	virtual void timerEvent(QTimerEvent *event);
 	int timerId;
 
+	QPushButton* closeButton;
+	QPushButton* minButton;
+
 private:
 	QPixmap m_titleImage;
 
@@ -29,8 +32,11 @@ private:
 	QPoint m_startPosition; // 拖动开始前的鼠标位置
 	QPoint m_framePosition; // 窗体的原始位置
 
-	QPushButton* closeButton;
-	QPushButton* minButton;
+private slots:
+	void OnBtnClose();
+	void OnBtnMin();
+
+	void OnBtnStartClock1();
 
 private:
 	Ui::AlarmClockClass ui;

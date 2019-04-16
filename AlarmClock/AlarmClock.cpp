@@ -27,14 +27,20 @@ AlarmClock::AlarmClock(QWidget *parent)
 		"QPushButton:hover{background-color:rgb(6,168,240); border-image: url(:/AlarmClock/Resources/min.png);}"
 		"QPushButton:pressed{background-color: rgb(6,168,220); border-image: url(:/AlarmClock/Resources/min.png);}");
 
-
 	//labelTime显示时间
 	QString strDateTime = QDateTime::currentDateTime().toString("yyyy.MM.dd  hh:mm:ss");
 	ui.labelTime->setText(strDateTime);
 
-
 	//开始定时器
 	timerId = startTimer(1000);
+
+	//Tab1
+	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+	//绑定按钮
+	connect(minButton, SIGNAL(clicked()), this, SLOT(OnBtnMin()));
+	connect(ui.btnStart1Clock, SIGNAL(clicked()), this, SLOT(OnBtnStartClock1()));
 }
 
 
@@ -139,4 +145,54 @@ void AlarmClock::timerEvent(QTimerEvent *event)
 	ui.labelTime->setText("");
 	QString strDateTime = QDateTime::currentDateTime().toString("yyyy.MM.dd  hh:mm:ss");
 	ui.labelTime->setText(strDateTime);
+}
+
+/************************************
+@ Brief:		关闭主窗口
+@ Author:		woniu201 
+@ Created: 		2019/04/16
+@ Return:		    
+************************************/
+void AlarmClock::OnBtnClose()
+{
+	
+}
+
+/************************************
+@ Brief:		最小化主窗口
+@ Author:		woniu201 
+@ Created: 		2019/04/16
+@ Return:		    
+************************************/
+void AlarmClock::OnBtnMin()
+{
+	//this->hide();
+	this->showMinimized();
+}
+
+/************************************
+@ Brief:		开启/关闭闹铃1
+@ Author:		woniu201 
+@ Created: 		2019/04/16
+@ Return:		    
+************************************/
+bool bRuningClock1 = false;
+void AlarmClock::OnBtnStartClock1()
+{
+	if (bRuningClock1)
+	{
+		bRuningClock1 = false;
+		ui.btnStart1Clock->setText("开启闹铃");
+		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
+			"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
+			"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+	}
+	else
+	{
+		bRuningClock1 = true;
+		ui.btnStart1Clock->setText("闹铃中");
+		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:red; font-size:30px; border-radius:10px;padding:2px 4px;}"
+			"QPushButton:hover{background-color: rgb(6,168,240); color:red; border-radius:10px;padding:2px 4px;}"
+			"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:red; border-radius:10px;padding:2px 4px;}");
+	}
 }
