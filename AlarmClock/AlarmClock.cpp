@@ -12,7 +12,20 @@ AlarmClock::AlarmClock(QWidget *parent)
 	setAttribute(Qt::WA_TranslucentBackground);
 	m_titleImage.load(":/AlarmClock/Resources/background.jpg");
 
-	//关闭按钮，最下滑按钮
+//系统托盘
+	//设置提示文字
+	m_systray.setToolTip("蜗牛闹铃");
+	// 设置托盘图标
+	m_systray.setIcon(QIcon(":/AlarmClock/Resources/clock.png"));
+	//托盘菜单项
+	QMenu * menu = new QMenu();
+	menu->addAction(ui.actionExit);
+	m_systray.setContextMenu(menu);
+	//显示托盘
+	m_systray.show();
+
+	m_systray.show();
+//主页面关闭按钮，最下化按钮
 	closeButton = new QPushButton(this);
 	//closeButton->setIcon(QIcon(":/AlarmClock/Resources/close_normal.png"));
 	closeButton->setGeometry(this->rect().right() - 45, 10, 40, 30);
@@ -38,9 +51,16 @@ AlarmClock::AlarmClock(QWidget *parent)
 	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
 		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
 		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
-	//绑定按钮
+	
+	
+	//绑定响应事件
 	connect(minButton, SIGNAL(clicked()), this, SLOT(OnBtnMin()));
+	connect(closeButton, SIGNAL(clicked()), this, SLOT(OnBtnClose()));
+	connect(&m_systray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this, SLOT(OnSystemTrayClicked(QSystemTrayIcon::ActivationReason)));
+	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(OnExit()));
+	
 	connect(ui.btnStart1Clock, SIGNAL(clicked()), this, SLOT(OnBtnStartClock1()));
+
 }
 
 
@@ -155,7 +175,7 @@ void AlarmClock::timerEvent(QTimerEvent *event)
 ************************************/
 void AlarmClock::OnBtnClose()
 {
-	
+	this->hide();
 }
 
 /************************************
@@ -166,7 +186,6 @@ void AlarmClock::OnBtnClose()
 ************************************/
 void AlarmClock::OnBtnMin()
 {
-	//this->hide();
 	this->showMinimized();
 }
 
@@ -186,6 +205,10 @@ void AlarmClock::OnBtnStartClock1()
 		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
 			"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
 			"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+		ui.comboBoxHH1->setEnabled(true);
+		ui.comboBoxMM1->setEnabled(true);
+		ui.comboBoxRing1->setEnabled(true);
+		ui.textEdit1->setEnabled(true);
 	}
 	else
 	{
@@ -194,5 +217,37 @@ void AlarmClock::OnBtnStartClock1()
 		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:red; font-size:30px; border-radius:10px;padding:2px 4px;}"
 			"QPushButton:hover{background-color: rgb(6,168,240); color:red; border-radius:10px;padding:2px 4px;}"
 			"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:red; border-radius:10px;padding:2px 4px;}");
+		ui.comboBoxHH1->setEnabled(false);
+		ui.comboBoxMM1->setEnabled(false);
+		ui.comboBoxRing1->setEnabled(false);
+		ui.textEdit1->setEnabled(false);
 	}
+}
+
+/************************************
+@ Brief:		托盘退出按钮
+@ Author:		woniu201 
+@ Created:		2019/04/17
+@ Return:            
+************************************/
+void AlarmClock::OnExit()
+{
+	QApplication::exit(0);
+}
+
+/************************************
+@ Brief:		双击托盘
+@ Author:		woniu201 
+@ Created:		2019/04/17
+@ Return:            
+************************************/
+int  AlarmClock::OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason)
+{
+	if (reason == QSystemTrayIcon::Trigger
+		|| reason == QSystemTrayIcon::DoubleClick)
+	{
+		// 显示主窗口
+		this->showNormal();
+	}
+	return 0;
 }

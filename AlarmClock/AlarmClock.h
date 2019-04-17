@@ -2,7 +2,8 @@
 #pragma execution_character_set("utf-8")
 
 #include <QtGui>
-#include <QtWidgets/QDialog>
+#include <QtWidgets>
+
 #include "ui_AlarmClock.h"
 #include <QPushButton>
 
@@ -32,10 +33,12 @@ private:
 	QPoint m_startPosition; // 拖动开始前的鼠标位置
 	QPoint m_framePosition; // 窗体的原始位置
 
+	QSystemTrayIcon m_systray;
 private slots:
 	void OnBtnClose();
 	void OnBtnMin();
-
+	void OnExit();
+	int  OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason);
 	void OnBtnStartClock1();
 
 private:

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="AlarmClock">
+    <file>Resources/exit.png</file>
     <file>Resources/clock.png</file>
     <file>Resources/background.jpg</file>
     <file>Resources/close.png</file>
