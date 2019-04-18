@@ -6,6 +6,8 @@
 #include "ui_AlarmClock.h"
 #include <QPushButton>
 #include "AlertTimeDlg.h"
+#include <QtMultimedia/QMediaPlayer>
+#include <QVideoWidget>
 
 class AlarmClock : public QDialog
 {
@@ -35,13 +37,18 @@ private:
 
 	QSystemTrayIcon m_systray;
 	AlertTimeDlg* alertTimeDlg;
+
+	QMediaPlayer *player;
+
+	bool bRuningClock1;
 private slots:
 	void OnBtnClose();
 	void OnBtnMin();
 	void OnExit();
 	int  OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason);
 	void OnBtnStartClock1();
-
+	
+	void OnListen1();
 private:
 	Ui::AlarmClockClass ui;
 };

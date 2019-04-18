@@ -1,6 +1,7 @@
 #include "AlarmClock.h"
 #include <QPainter>
 #include "AlertTimeDlg.h"
+#include <QTime>
 
 AlarmClock::AlarmClock(QWidget *parent)
 	: QDialog(parent)
@@ -53,7 +54,10 @@ AlarmClock::AlarmClock(QWidget *parent)
 		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
 		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
 	
-	
+	//
+	player = NULL;
+	bRuningClock1 = false;
+
 	//°ó¶¨ÏìÓ¦ÊÂ¼þ
 	connect(minButton, SIGNAL(clicked()), this, SLOT(OnBtnMin()));
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(OnBtnClose()));
@@ -61,6 +65,7 @@ AlarmClock::AlarmClock(QWidget *parent)
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(OnExit()));
 	
 	connect(ui.btnStart1Clock, SIGNAL(clicked()), this, SLOT(OnBtnStartClock1()));
+	connect(ui.listenBtn1, SIGNAL(clicked()), this, SLOT(OnListen1()));
 
 }
 
@@ -166,6 +171,24 @@ void AlarmClock::timerEvent(QTimerEvent *event)
 	ui.labelTime->setText("");
 	QString strDateTime = QDateTime::currentDateTime().toString("yyyy.MM.dd  hh:mm:ss");
 	ui.labelTime->setText(strDateTime);
+
+	if (bRuningClock1)
+	{
+		int hh = ui.comboBoxHH1->currentText().toInt();
+		int mm = ui.comboBoxMM1->currentText().toInt();
+		QTime sysTime = QTime::currentTime();
+		if ((sysTime.hour()==hh) && (sysTime.minute()==mm))
+		{
+			if (player)
+			{
+				delete player;
+				player = NULL;
+			}
+			player = new QMediaPlayer;
+			player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
+			player->play();
+		}
+	}
 }
 
 /************************************
@@ -196,8 +219,6 @@ void AlarmClock::OnBtnMin()
 @ Created: 		2019/04/16
 @ Return:		    
 ************************************/
-bool bRuningClock1 = false;
-
 void AlarmClock::OnBtnStartClock1()
 {
 	if (bRuningClock1)
@@ -259,4 +280,24 @@ int  AlarmClock::OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason)
 		this->showNormal();
 	}
 	return 0;
+}
+
+/************************************
+@ Brief:		ÄÖÁå1ÊÔÌý
+@ Author:		woniu201 
+@ Created: 		2019/04/18
+@ Return:		    
+************************************/
+void AlarmClock::OnListen1()
+{	//player->setMedia(QUrl::fromLocalFile(":/AlarmClock/Resources/sound/ÁåÉù1.mp3"));
+	//player->setMedia(QUrl(":/AlarmClock/Resources/sound/sound1.mp3"));
+	//player->setMedia(QMediaContent(QUrl::fromLocalFile("./Resources/sound/sound1.mp3")));
+	if (player)
+	{
+		delete player;
+		player = NULL;
+	}
+	player = new QMediaPlayer;
+	player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
+	player->play();
 }
