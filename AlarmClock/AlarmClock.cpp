@@ -1,5 +1,6 @@
 #include "AlarmClock.h"
 #include <QPainter>
+#include "AlertTimeDlg.h"
 
 AlarmClock::AlarmClock(QWidget *parent)
 	: QDialog(parent)
@@ -196,10 +197,14 @@ void AlarmClock::OnBtnMin()
 @ Return:		    
 ************************************/
 bool bRuningClock1 = false;
+
 void AlarmClock::OnBtnStartClock1()
 {
 	if (bRuningClock1)
 	{
+		alertTimeDlg->close();
+		delete alertTimeDlg;
+
 		bRuningClock1 = false;
 		ui.btnStart1Clock->setText("¿ªÆôÄÖÁå");
 		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
@@ -212,6 +217,10 @@ void AlarmClock::OnBtnStartClock1()
 	}
 	else
 	{
+
+		alertTimeDlg = new AlertTimeDlg(this);
+		alertTimeDlg->show();
+
 		bRuningClock1 = true;
 		ui.btnStart1Clock->setText("ÄÖÁåÖÐ");
 		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:red; font-size:30px; border-radius:10px;padding:2px 4px;}"

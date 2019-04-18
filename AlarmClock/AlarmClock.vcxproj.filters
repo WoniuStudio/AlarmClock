@@ -39,14 +39,23 @@
     <ClCompile Include="GeneratedFiles\qrc_AlarmClock.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="AlertTimeDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="AlarmClock.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="AlertTimeDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AlarmClock.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AlertTimeDlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

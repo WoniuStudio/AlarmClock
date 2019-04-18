@@ -114,6 +114,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlarmClock.cpp" />
+    <ClCompile Include="AlertTimeDlg.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_AlarmClock.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
@@ -127,11 +128,16 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AlarmClock.ui" />
+    <QtUic Include="AlertTimeDlg.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="AlarmClock.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AlertTimeDlg.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+    </QtMoc>
     <ClInclude Include="GeneratedFiles\ui_AlarmClock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -3,9 +3,9 @@
 
 #include <QtGui>
 #include <QtWidgets>
-
 #include "ui_AlarmClock.h"
 #include <QPushButton>
+#include "AlertTimeDlg.h"
 
 class AlarmClock : public QDialog
 {
@@ -34,6 +34,7 @@ private:
 	QPoint m_framePosition; // 窗体的原始位置
 
 	QSystemTrayIcon m_systray;
+	AlertTimeDlg* alertTimeDlg;
 private slots:
 	void OnBtnClose();
 	void OnBtnMin();
