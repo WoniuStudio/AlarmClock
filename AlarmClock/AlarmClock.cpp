@@ -47,7 +47,7 @@ AlarmClock::AlarmClock(QWidget *parent)
 	ui.labelTime->setText(strDateTime);
 
 	//开始定时器
-	timerId = startTimer(1000);
+	timerId = startTimer(5000);
 
 	//Tab1
 	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
