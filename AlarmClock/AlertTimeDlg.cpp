@@ -10,7 +10,14 @@ AlertTimeDlg::AlertTimeDlg(QWidget *parent)
 	setWindowFlags(flags);
 
 // 	//启动定时器
-// 	startTimer(1000);
+ 	startTimer(1000);
+
+	player = NULL;
+	player = new QMediaPlayer;
+	player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
+	player->play();
+
+	this->setAttribute(Qt::WA_DeleteOnClose, 1);
 }
 
 AlertTimeDlg::~AlertTimeDlg()
@@ -28,10 +35,31 @@ AlertTimeDlg::~AlertTimeDlg()
 int second = 0;
 void AlertTimeDlg::timerEvent(QTimerEvent *event)
 {
-	second++;
-	if (second == 10)
+	if (player)
 	{
-		this->exec();
-		second = 0;
+		if (player->state() == QMediaPlayer::StoppedState)
+		{
+			delete player;
+			player = NULL;
+
+			player = new QMediaPlayer;
+			player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
+			player->play();
+		}
 	}
+}
+
+/************************************
+@ Brief:		关闭窗口
+@ Author:		woniu201
+@ Created:		2019/04/19
+@ Return:
+************************************/
+void AlertTimeDlg::closeEvent(QCloseEvent *event)
+{
+	//event->ignore();
+	player->stop();
+
+ 	emit closeSignal();
+	QDialog::accept();
 }

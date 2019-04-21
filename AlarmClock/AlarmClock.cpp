@@ -47,7 +47,7 @@ AlarmClock::AlarmClock(QWidget *parent)
 	ui.labelTime->setText(strDateTime);
 
 	//开始定时器
-	timerId = startTimer(5000);
+	timerId = startTimer(1000);
 
 	//Tab1
 	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
@@ -57,6 +57,7 @@ AlarmClock::AlarmClock(QWidget *parent)
 	//
 	player = NULL;
 	bRuningClock1 = false;
+	alertTimeDlg = NULL;
 
 	//绑定响应事件
 	connect(minButton, SIGNAL(clicked()), this, SLOT(OnBtnMin()));
@@ -179,14 +180,19 @@ void AlarmClock::timerEvent(QTimerEvent *event)
 		QTime sysTime = QTime::currentTime();
 		if ((sysTime.hour()==hh) && (sysTime.minute()==mm))
 		{
-			if (player)
+			if (alertTimeDlg==NULL)
 			{
-				delete player;
-				player = NULL;
+				alertTimeDlg = new AlertTimeDlg();
+
+				int width = GetSystemMetrics(SM_CXFULLSCREEN);
+				int height = GetSystemMetrics(SM_CYFULLSCREEN);
+				alertTimeDlg->move(width - alertTimeDlg->width(), height - alertTimeDlg->height());
+				alertTimeDlg->setWindowFlags(Qt::WindowStaysOnTopHint);//窗口置顶
+				alertTimeDlg->setWindowTitle("闹铃中");
+				connect(alertTimeDlg, &AlertTimeDlg::closeSignal, this, &AlarmClock::OnCloseAlertTimeDlg1);
+				alertTimeDlg->show();
 			}
-			player = new QMediaPlayer;
-			player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
-			player->play();
+
 		}
 	}
 }
@@ -223,9 +229,6 @@ void AlarmClock::OnBtnStartClock1()
 {
 	if (bRuningClock1)
 	{
-		alertTimeDlg->close();
-		delete alertTimeDlg;
-
 		bRuningClock1 = false;
 		ui.btnStart1Clock->setText("开启闹铃");
 		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
@@ -240,7 +243,13 @@ void AlarmClock::OnBtnStartClock1()
 	{
 
 		alertTimeDlg = new AlertTimeDlg(this);
+
+		int width = GetSystemMetrics(SM_CXFULLSCREEN);
+		int height = GetSystemMetrics(SM_CYFULLSCREEN);
+		alertTimeDlg->move(width - alertTimeDlg->width(), height - alertTimeDlg->height());
 		alertTimeDlg->show();
+		connect(alertTimeDlg, &AlertTimeDlg::closeSignal, this, &AlarmClock::OnCloseAlertTimeDlg1);
+		alertTimeDlg->setWindowTitle("闹铃中");
 
 		bRuningClock1 = true;
 		ui.btnStart1Clock->setText("闹铃中");
@@ -300,4 +309,19 @@ void AlarmClock::OnListen1()
 	player = new QMediaPlayer;
 	player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
 	player->play();
+}
+
+
+void AlarmClock::OnCloseAlertTimeDlg1()
+{
+	bRuningClock1 = false;
+	ui.btnStart1Clock->setText("开启闹铃");
+	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+	ui.comboBoxHH1->setEnabled(true);
+	ui.comboBoxMM1->setEnabled(true);
+	ui.comboBoxRing1->setEnabled(true);
+	ui.textEdit1->setEnabled(true);
+	alertTimeDlg = NULL;
 }

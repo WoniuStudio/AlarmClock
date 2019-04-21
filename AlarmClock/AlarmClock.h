@@ -47,8 +47,9 @@ private slots:
 	void OnExit();
 	int  OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason);
 	void OnBtnStartClock1();
-	
 	void OnListen1();
+
+	void OnCloseAlertTimeDlg1();
 private:
 	Ui::AlarmClockClass ui;
 };
