@@ -2,6 +2,7 @@
 #include <QPainter>
 #include "AlertTimeDlg.h"
 #include <QTime>
+#include <QMessageBox>
 
 AlarmClock::AlarmClock(QWidget *parent)
 	: QDialog(parent)
@@ -53,10 +54,21 @@ AlarmClock::AlarmClock(QWidget *parent)
 	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
 		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
 		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
-	
-	//
+	ui.btnStart2Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+
+
+	//初始化变量
 	player = NULL;
+	alertTimeDlg = NULL;
 	bRuningClock1 = false;
+	bRuningClock2 = false;
+	int clock1HH = 0;
+	int clock1MM = 0;
+	int clock2HH = 0;
+	int clock2MM = 0;
+
 
 	//绑定响应事件
 	connect(minButton, SIGNAL(clicked()), this, SLOT(OnBtnMin()));
@@ -64,8 +76,10 @@ AlarmClock::AlarmClock(QWidget *parent)
 	connect(&m_systray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this, SLOT(OnSystemTrayClicked(QSystemTrayIcon::ActivationReason)));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(OnExit()));
 	
-	connect(ui.btnStart1Clock, SIGNAL(clicked()), this, SLOT(OnBtnStartClock1()));
-	connect(ui.listenBtn1, SIGNAL(clicked()), this, SLOT(OnListen1()));
+	connect(ui.btnStart1Clock, &QPushButton::clicked, this, &AlarmClock::OnBtnStartClock1);
+	connect(ui.btnStart2Clock, &QPushButton::clicked, this, &AlarmClock::OnBtnStartClock2);
+
+	connect(ui.listenBtn1, &QPushButton::clicked, this, &AlarmClock::OnListen1);
 
 }
 
@@ -75,6 +89,8 @@ void AlarmClock::paintEvent(QPaintEvent *event)
 	QPainter painter(this);
 	QRect frameRect = rect();
 	frameRect.adjust(1, 1, -1, -1);
+
+	this->resize(452, 549);
 
 	//画背景和边框
 	painter.setPen(QColor(0x66, 0x66, 0x66));
@@ -174,20 +190,37 @@ void AlarmClock::timerEvent(QTimerEvent *event)
 
 	if (bRuningClock1)
 	{
-		int hh = ui.comboBoxHH1->currentText().toInt();
-		int mm = ui.comboBoxMM1->currentText().toInt();
 		QTime sysTime = QTime::currentTime();
-		if ((sysTime.hour()==hh) && (sysTime.minute()==mm))
+		if ((sysTime.hour()== clock1HH) && (sysTime.minute()== clock1HH))
 		{
-			if (player)
+			if (alertTimeDlg==NULL)
 			{
-				delete player;
-				player = NULL;
+				alertTimeDlg = new AlertTimeDlg(this, "./Resources/sound/sound1.mp3", "闹铃1：时间到了！");
+
+				int width = GetSystemMetrics(SM_CXFULLSCREEN);
+				int height = GetSystemMetrics(SM_CYFULLSCREEN);
+				alertTimeDlg->move(width - alertTimeDlg->width(), height - alertTimeDlg->height());
+				alertTimeDlg->setWindowFlags(Qt::WindowStaysOnTopHint);//窗口置顶
+				alertTimeDlg->setWindowTitle("闹铃中");
+				connect(alertTimeDlg, &AlertTimeDlg::closeSignal, this, &AlarmClock::OnCloseAlertTimeDlg1);
+				alertTimeDlg->show();
 			}
-			player = new QMediaPlayer;
-			player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
-			player->play();
+
 		}
+
+		//闹铃倒计时
+		QTime endTime;
+		endTime.setHMS(clock1HH, clock1MM, 0);
+		qDebug() << endTime.toString("hh:mm ss");
+
+		QTime startTime = QTime::currentTime();
+		int sec = startTime.secsTo(endTime);
+		
+		int hh = int(sec/3600);
+		int mm = int((sec-hh*3600)/60);
+		int ss = sec - hh*3600 - mm*60;
+
+		ui.labelCountDown1->setText(QString::asprintf("倒计时：%02d:%02d %02d", hh, mm, ss));
 	}
 }
 
@@ -223,9 +256,6 @@ void AlarmClock::OnBtnStartClock1()
 {
 	if (bRuningClock1)
 	{
-		alertTimeDlg->close();
-		delete alertTimeDlg;
-
 		bRuningClock1 = false;
 		ui.btnStart1Clock->setText("开启闹铃");
 		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
@@ -235,22 +265,40 @@ void AlarmClock::OnBtnStartClock1()
 		ui.comboBoxMM1->setEnabled(true);
 		ui.comboBoxRing1->setEnabled(true);
 		ui.textEdit1->setEnabled(true);
+		ui.labelCountDown1->setText("倒计时！");
 	}
 	else
 	{
 
-		alertTimeDlg = new AlertTimeDlg(this);
-		alertTimeDlg->show();
+// 		alertTimeDlg = new AlertTimeDlg(this);
+// 
+// 		int width = GetSystemMetrics(SM_CXFULLSCREEN);
+// 		int height = GetSystemMetrics(SM_CYFULLSCREEN);
+// 		alertTimeDlg->move(width - alertTimeDlg->width(), height - alertTimeDlg->height());
+// 		alertTimeDlg->show();
+// 		connect(alertTimeDlg, &AlertTimeDlg::closeSignal, this, &AlarmClock::OnCloseAlertTimeDlg1);
+// 		alertTimeDlg->setWindowTitle("闹铃中");
 
-		bRuningClock1 = true;
-		ui.btnStart1Clock->setText("闹铃中");
-		ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:red; font-size:30px; border-radius:10px;padding:2px 4px;}"
-			"QPushButton:hover{background-color: rgb(6,168,240); color:red; border-radius:10px;padding:2px 4px;}"
-			"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:red; border-radius:10px;padding:2px 4px;}");
-		ui.comboBoxHH1->setEnabled(false);
-		ui.comboBoxMM1->setEnabled(false);
-		ui.comboBoxRing1->setEnabled(false);
-		ui.textEdit1->setEnabled(false);
+		clock1HH = ui.comboBoxHH1->currentText().toInt();
+		clock1MM = ui.comboBoxMM1->currentText().toInt();
+
+		QTime curTime = QTime::currentTime();
+		if ((clock1HH*3600 +clock1MM*60) >= (curTime.hour()*3600+ curTime.minute()*60+curTime.second()))
+		{
+			bRuningClock1 = true;
+			ui.btnStart1Clock->setText("闹铃中");
+			ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:red; font-size:30px; border-radius:10px;padding:2px 4px;}"
+				"QPushButton:hover{background-color: rgb(6,168,240); color:red; border-radius:10px;padding:2px 4px;}"
+				"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:red; border-radius:10px;padding:2px 4px;}");
+			ui.comboBoxHH1->setEnabled(false);
+			ui.comboBoxMM1->setEnabled(false);
+			ui.comboBoxRing1->setEnabled(false);
+			ui.textEdit1->setEnabled(false);
+		}
+		else
+		{
+			QMessageBox::about(NULL, "提示", "<font color='red'>闹铃时间错误！</font>" );
+		}
 	}
 }
 
@@ -300,4 +348,66 @@ void AlarmClock::OnListen1()
 	player = new QMediaPlayer;
 	player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
 	player->play();
+}
+
+
+void AlarmClock::OnCloseAlertTimeDlg1()
+{
+	bRuningClock1 = false;
+	ui.btnStart1Clock->setText("开启闹铃");
+	ui.btnStart1Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
+		"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+	ui.comboBoxHH1->setEnabled(true);
+	ui.comboBoxMM1->setEnabled(true);
+	ui.comboBoxRing1->setEnabled(true);
+	ui.textEdit1->setEnabled(true);
+	ui.labelCountDown1->setText("倒计时！");
+	alertTimeDlg = NULL;
+}
+
+/************************************
+@ Brief:		开启/关闭闹铃2
+@ Author:		woniu201 
+@ Created:		2019/04/23
+@ Return:            
+************************************/
+void AlarmClock::OnBtnStartClock2()
+{
+	if (bRuningClock2)
+	{
+		bRuningClock2 = false;
+		ui.btnStart2Clock->setText("开启闹铃");
+		ui.btnStart2Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:white; font-size:30px; border-radius:10px;padding:2px 4px;}"
+			"QPushButton:hover{background-color: rgb(6,168,240); color:white; border-radius:10px;padding:2px 4px;}"
+			"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:white; border-radius:10px;padding:2px 4px;}");
+		ui.comboBoxHH2->setEnabled(true);
+		ui.comboBoxMM2->setEnabled(true);
+		ui.comboBoxRing2->setEnabled(true);
+		ui.textEdit2->setEnabled(true);
+		ui.labelCountDown2->setText("倒计时！");
+	}
+	else
+	{
+		clock2HH = ui.comboBoxHH2->currentText().toInt();
+		clock2MM = ui.comboBoxMM2->currentText().toInt();
+
+		QTime curTime = QTime::currentTime();
+		if ((clock2HH * 3600 + clock2MM * 60) >= (curTime.hour() * 3600 + curTime.minute() * 60 + curTime.second()))
+		{
+			bRuningClock2 = true;
+			ui.btnStart2Clock->setText("闹铃中");
+			ui.btnStart2Clock->setStyleSheet("QPushButton{background-color:rgb(6,168,255); color:red; font-size:30px; border-radius:10px;padding:2px 4px;}"
+				"QPushButton:hover{background-color: rgb(6,168,240); color:red; border-radius:10px;padding:2px 4px;}"
+				"QPushButton:pressed{background-color: rgb(6,168,220);border:none;color:red; border-radius:10px;padding:2px 4px;}");
+			ui.comboBoxHH2->setEnabled(false);
+			ui.comboBoxMM2->setEnabled(false);
+			ui.comboBoxRing2->setEnabled(false);
+			ui.textEdit2->setEnabled(false);
+		}
+		else
+		{
+			QMessageBox::about(NULL, "提示", "<font color='red'>闹铃时间错误！</font>");
+		}
+	}
 }

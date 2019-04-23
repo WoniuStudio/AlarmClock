@@ -37,18 +37,34 @@ private:
 
 	QSystemTrayIcon m_systray;
 	AlertTimeDlg* alertTimeDlg;
+	AlertTimeDlg* alertTimeDlg2;
 
 	QMediaPlayer *player;
 
+
+	//ƒ÷¡Â1
 	bool bRuningClock1;
+	int clock1HH;
+	int clock1MM;
+
+
+	//ƒ÷¡Â2
+	bool bRuningClock2;
+	int clock2HH;
+	int clock2MM;
+
 private slots:
 	void OnBtnClose();
 	void OnBtnMin();
 	void OnExit();
 	int  OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason);
 	void OnBtnStartClock1();
-	
+	void OnBtnStartClock2();
 	void OnListen1();
+	void OnCloseAlertTimeDlg1();
+
+	
+
 private:
 	Ui::AlarmClockClass ui;
 };

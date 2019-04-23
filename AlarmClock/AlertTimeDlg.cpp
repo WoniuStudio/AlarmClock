@@ -1,9 +1,12 @@
 #include "AlertTimeDlg.h"
 
-AlertTimeDlg::AlertTimeDlg(QWidget *parent, QString strSound, int clockNum)
+AlertTimeDlg::AlertTimeDlg(QWidget *parent, QString strSound, QString clockTxt)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
+
+	m_sound = strSound;
+	m_clockTxt = clockTxt;
 
 	//去掉?
 	Qt::WindowFlags flags = Qt::Dialog; flags |= Qt::WindowCloseButtonHint;
@@ -17,6 +20,8 @@ AlertTimeDlg::AlertTimeDlg(QWidget *parent, QString strSound, int clockNum)
 	player = new QMediaPlayer;
 	player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
 	player->play();
+
+	this->setAttribute(Qt::WA_DeleteOnClose, 1);
 }
 
 AlertTimeDlg::~AlertTimeDlg()
@@ -34,30 +39,32 @@ AlertTimeDlg::~AlertTimeDlg()
 bool b = true;
 void AlertTimeDlg::timerEvent(QTimerEvent *event)
 {
-	if (b)
+
+	if (player)
 	{
-
-		if (player)
+		if (player->state() == QMediaPlayer::StoppedState)
 		{
+			delete player;
+			player = NULL;
 
-			if (player->state() == QMediaPlayer::StoppedState)
-			{
-				qDebug() << "停止";
-
-				delete player;
-				player = NULL;
-
-				player = new QMediaPlayer;
-				player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
-				player->play();
-			}
-
-			if (player->state() == QMediaPlayer::PlayingState)
-			{
-				qDebug() << "播放中";
-			}
+			player = new QMediaPlayer;
+			player->setMedia(QUrl::fromLocalFile(m_sound));
+			player->play();
 		}
 	}
+}
 
+/************************************
+@ Brief:		关闭窗口
+@ Author:		woniu201
+@ Created:		2019/04/19
+@ Return:
+************************************/
+void AlertTimeDlg::closeEvent(QCloseEvent *event)
+{
+	//event->ignore();
+	player->stop();
 
+ 	emit closeSignal();
+	QDialog::accept();
 }
