@@ -113,6 +113,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="AlarmClock.cpp" />
     <ClCompile Include="AlertTimeDlg.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_AlarmClock.cpp">
@@ -127,6 +128,7 @@
     <QtMoc Include="AlarmClock.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="AboutDlg.ui" />
     <QtUic Include="AlarmClock.ui" />
     <QtUic Include="AlertTimeDlg.ui" />
   </ItemGroup>
@@ -134,11 +136,23 @@
     <QtRcc Include="AlarmClock.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="AboutDlg.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtMultimedia;$(QTDIR)\include\QtMultimediaWidgets</IncludePath>
+    </QtMoc>
+    <ClInclude Include="resource.h" />
     <QtMoc Include="AlertTimeDlg.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
     </QtMoc>
     <ClInclude Include="GeneratedFiles\ui_AlarmClock.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AlarmClock.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\clock.png" />
+    <Image Include="Resources\exe.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

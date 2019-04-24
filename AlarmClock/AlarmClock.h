@@ -27,6 +27,7 @@ public:
 
 	QPushButton* closeButton;
 	QPushButton* minButton;
+	QPushButton* aboutButton;
 
 private:
 	QPixmap m_titleImage;
@@ -40,7 +41,8 @@ private:
 	AlertTimeDlg* alertTimeDlg2;
 
 	QMediaPlayer *player;
-
+	QMediaPlayer *player2;
+	bool bSystray = false;
 
 	//ƒ÷¡Â1
 	bool bRuningClock1;
@@ -56,13 +58,15 @@ private:
 private slots:
 	void OnBtnClose();
 	void OnBtnMin();
+	void OnBtnAbout();
 	void OnExit();
 	int  OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason);
 	void OnBtnStartClock1();
 	void OnBtnStartClock2();
 	void OnListen1();
+	void OnListen2();
 	void OnCloseAlertTimeDlg1();
-
+	void OnCloseAlertTimeDlg2();
 	
 
 private:

@@ -42,6 +42,9 @@
     <ClCompile Include="AlertTimeDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="AlarmClock.h">
@@ -50,12 +53,18 @@
     <QtMoc Include="AlertTimeDlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="AboutDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AlarmClock.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="AlertTimeDlg.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AboutDlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -68,5 +77,15 @@
     <ClInclude Include="GeneratedFiles\ui_AlarmClock.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AlarmClock.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\clock.png" />
+    <Image Include="Resources\exe.ico" />
   </ItemGroup>
 </Project>
