@@ -343,6 +343,9 @@ int  AlarmClock::OnSystemTrayClicked(QSystemTrayIcon::ActivationReason reason)
 	if (reason == QSystemTrayIcon::Trigger
 		|| reason == QSystemTrayIcon::DoubleClick)
 	{
+		//不显示标题栏（无边框）
+		setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
 		// 显示主窗口
 		this->showNormal();
 		bSystray = false;
@@ -489,7 +492,7 @@ void AlarmClock::OnBtnStartClock1()
 		}
 		else
 		{
-			//QMessageBox::about(NULL, "提示", "<font color='red'>闹铃时间错误！</font>" );
+			QMessageBox::about(NULL, "提示", "<font color='red'>闹铃时间错误！</font>" );
 		}
 	}
 }
