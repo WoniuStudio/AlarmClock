@@ -4,6 +4,7 @@
 #include <QTime>
 #include <QMessageBox>
 #include "AboutDlg.h"
+#include "NowTimeDlg.h"
 
 AlarmClock::AlarmClock(QWidget *parent)
 	: QDialog(parent)
@@ -281,6 +282,13 @@ void AlarmClock::timerEvent(QTimerEvent *event)
 			ui.labelCountDown2->setText(QString::asprintf("倒计时：%02d:%02d %02d", hh, mm, ss));
 		}
 	}
+
+	//整点报时
+	if (QTime::currentTime().minute()==0 && QTime::currentTime().second()==0)
+	{
+		NowTimeDlg* nowTimeDlg = new NowTimeDlg;
+		nowTimeDlg->show();
+	}
 }
 
 /************************************
@@ -449,6 +457,9 @@ void AlarmClock::OnCloseAlertTimeDlg2()
 ************************************/
 void AlarmClock::OnBtnStartClock1()
 {
+// 	NowTimeDlg* nowTimeDlg = new NowTimeDlg;
+// 	nowTimeDlg->show();
+// 	return;
 	if (bRuningClock1)
 	{
 		bRuningClock1 = false;

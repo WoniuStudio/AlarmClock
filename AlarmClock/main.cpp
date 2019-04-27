@@ -6,6 +6,9 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 	a.setWindowIcon(QIcon(":/AlarmClock/Resources/clock.png"));
+	
+	//最后一个可视化窗口关闭时，不退出程序
+	a.setQuitOnLastWindowClosed(false);
 
 	AlarmClock w;
 	w.show();
