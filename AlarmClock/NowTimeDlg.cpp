@@ -31,14 +31,95 @@ NowTimeDlg::NowTimeDlg(QWidget *parent)
 	{
 		ui.label->setText("现在是：下午" + strTime);
 	}
+
+	playList = NULL;
+	player = NULL;
+	speakTime(QTime::currentTime().hour());
+
+	delayDlg = 10;	//10s后关闭窗口
+	num = 1;		
+	startTimer(1000);
 }
 
 NowTimeDlg::~NowTimeDlg()
 {
 }
 
-
+/************************************
+@ Brief:		关闭窗口事件
+@ Author:		woniu201 
+@ Created:		2019/04/29
+@ Return:            
+************************************/
 void NowTimeDlg::closeEvent(QCloseEvent *event)
 {
 
+}
+
+/************************************
+@ Brief:		语音报时
+@ Author:		woniu201 
+@ Created:		2019/04/29
+@ Return:            
+************************************/
+void NowTimeDlg::speakTime(const int hour)
+{
+	if (player)
+	{
+		delete player;
+		player = NULL;
+	}
+	if (playList)
+	{
+		delete playList;
+		playList = NULL;
+	}
+	
+	QString strTimePath;
+
+	playList = new QMediaPlaylist;
+	playList->addMedia(QUrl::fromLocalFile("./Resources/sound/nowtime.wav"));
+	if (hour<=7)
+	{
+		playList->addMedia(QUrl::fromLocalFile("./Resources/sound/am0.wav"));
+		strTimePath = QString::asprintf("./Resources/sound/%d.wav", hour);
+		playList->addMedia(QUrl::fromLocalFile(strTimePath));
+	}
+	else if ((hour>7)&&(hour<=12))
+	{
+		playList->addMedia(QUrl::fromLocalFile("./Resources/sound/am.wav"));
+		strTimePath = QString::asprintf("./Resources/sound/%d.wav", hour);
+		playList->addMedia(QUrl::fromLocalFile(strTimePath));
+	}
+	else if ((hour > 12) && (hour <= 20))
+	{
+		playList->addMedia(QUrl::fromLocalFile("./Resources/sound/pm.wav"));
+		strTimePath = QString::asprintf("./Resources/sound/%d.wav", hour-12);
+		playList->addMedia(QUrl::fromLocalFile(strTimePath));
+	}
+	else if (hour > 20)
+	{
+		playList->addMedia(QUrl::fromLocalFile("./Resources/sound/am.wav"));
+		strTimePath = QString::asprintf("./Resources/sound/%d.wav", hour-12);
+		playList->addMedia(QUrl::fromLocalFile(strTimePath));
+	}
+	playList->addMedia(QUrl::fromLocalFile("./Resources/sound/point.wav"));
+
+	player = new QMediaPlayer;
+	player->setPlaylist(playList);
+	player->play();
+}
+
+/************************************
+@ Brief:		定时检测10S后退出窗口
+@ Author:		woniu201 
+@ Created:		2019/04/29
+@ Return:            
+************************************/
+void NowTimeDlg::timerEvent(QTimerEvent *event)
+{
+	if (num++ >= delayDlg)
+	{
+		this->close();
+	}
 }
