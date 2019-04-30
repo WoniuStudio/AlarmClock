@@ -325,7 +325,7 @@ void AlarmClock::OnBtnAbout()
 	AboutDlg aboutDlg(this);
 	aboutDlg.setModal(true);
 	aboutDlg.setWindowTitle("关于");
-	aboutDlg.ui.label1->setText("作者：蜗牛201\r\n版本：1.0.0\r\n发布日期：2019/04/24\r\n微信公号：码农code之路");
+	aboutDlg.ui.label1->setText("作者：蜗牛201\r\n版本：1.1.0\r\n发布日期：2019/04/24\r\n微信公号：码农code之路");
 	aboutDlg.exec();
 }
 
@@ -457,9 +457,9 @@ void AlarmClock::OnCloseAlertTimeDlg2()
 ************************************/
 void AlarmClock::OnBtnStartClock1()
 {
-	NowTimeDlg* nowTimeDlg = new NowTimeDlg;
-	nowTimeDlg->show();
-	return;
+// 	NowTimeDlg* nowTimeDlg = new NowTimeDlg;
+// 	nowTimeDlg->show();
+// 	return;
 	if (bRuningClock1)
 	{
 		bRuningClock1 = false;
