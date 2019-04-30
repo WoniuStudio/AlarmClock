@@ -99,7 +99,7 @@ void NowTimeDlg::speakTime(const int hour)
 	}
 	else if (hour > 20)
 	{
-		playList->addMedia(QUrl::fromLocalFile("./Resources/sound/am.wav"));
+		playList->addMedia(QUrl::fromLocalFile("./Resources/sound/em.wav"));
 		strTimePath = QString::asprintf("./Resources/sound/%d.wav", hour-12);
 		playList->addMedia(QUrl::fromLocalFile(strTimePath));
 	}
