@@ -2,8 +2,11 @@
 #include <QtWidgets/QApplication>
 #include "AlertTimeDlg.h"
 
+extern bool IsAutoStart();
+extern bool SetAutoStart();
 int main(int argc, char *argv[])
 {
+	bool bRet = SetAutoStart();
 	QApplication a(argc, argv);
 	a.setWindowIcon(QIcon(":/AlarmClock/Resources/clock.png"));
 	

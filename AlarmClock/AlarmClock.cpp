@@ -46,10 +46,10 @@ AlarmClock::AlarmClock(QWidget *parent)
 		"QPushButton:pressed{background-color: rgb(6,168,220); border-image: url(:/AlarmClock/Resources/min.png);}");
 
 	aboutButton = new QPushButton(this);
-	aboutButton->setGeometry(this->rect().right() - 125, 10, 40, 30);
-	aboutButton->setStyleSheet("QPushButton{background-color:transparent; border-image: url(:/AlarmClock/Resources/about.png);}"
-		"QPushButton:hover{background-color:rgb(6,168,240); border-image: url(:/AlarmClock/Resources/about.png);}"
-		"QPushButton:pressed{background-color: rgb(6,168,220); border-image: url(:/AlarmClock/Resources/about.png);}");
+	aboutButton->setGeometry(this->rect().right() - 115, 10, 30, 30);
+	aboutButton->setStyleSheet("QPushButton{background-color:transparent; border-image: url(:/AlarmClock/Resources/setting.png);}"
+		"QPushButton:hover{background-color:rgb(6,168,240); border-image: url(:/AlarmClock/Resources/setting.png);}"
+		"QPushButton:pressed{background-color: rgb(6,168,220); border-image: url(:/AlarmClock/Resources/setting.png);}");
 
 	//labelTimeœ‘ æ ±º‰
 	QString strDateTime = QDateTime::currentDateTime().toString("yyyy.MM.dd  hh:mm:ss");

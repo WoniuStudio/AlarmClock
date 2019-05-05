@@ -19,6 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -116,6 +117,7 @@
     <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="AlarmClock.cpp" />
     <ClCompile Include="AlertTimeDlg.cpp" />
+    <ClCompile Include="AutoStart.cpp" />
     <ClCompile Include="GeneratedFiles\qrc_AlarmClock.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
