@@ -1,8 +1,29 @@
 <RCC>
   <qresource prefix="AlarmClock">
+    <file>Resources/about_btn.png</file>
+    <file>Resources/setting_btn.png</file>
+    <file>Resources/sound/0.wav</file>
+    <file>Resources/sound/1.wav</file>
+    <file>Resources/sound/2.wav</file>
+    <file>Resources/sound/3.wav</file>
+    <file>Resources/sound/4.wav</file>
+    <file>Resources/sound/5.wav</file>
+    <file>Resources/sound/6.wav</file>
+    <file>Resources/sound/7.wav</file>
+    <file>Resources/sound/8.wav</file>
+    <file>Resources/sound/9.wav</file>
+    <file>Resources/sound/10.wav</file>
+    <file>Resources/sound/11.wav</file>
+    <file>Resources/sound/12.wav</file>
+    <file>Resources/sound/am.wav</file>
+    <file>Resources/sound/am0.wav</file>
+    <file>Resources/sound/nowtime.wav</file>
+    <file>Resources/sound/em.wav</file>
+    <file>Resources/sound/pm.wav</file>
+    <file>Resources/sound/point.wav</file>
+    <file>Resources/sound/sound1.mp3</file>
     <file>Resources/setting.png</file>
     <file>Resources/bk.png</file>
-    <file>Resources/sound/sound1.mp3</file>
     <file>Resources/exit.png</file>
     <file>Resources/clock.png</file>
     <file>Resources/about.png</file>

@@ -19,7 +19,7 @@ AlertTimeDlg::AlertTimeDlg(QWidget *parent, QString strSound, QString clockTxt)
 	player = NULL;
 
 	player = new QMediaPlayer;
-	player->setMedia(QUrl::fromLocalFile("./Resources/sound/sound1.mp3"));
+	player->setMedia(QUrl("qrc:/AlarmClock/Resources/sound/sound1.mp3"));
 	player->play();
 
 	ui.label->setText(clockTxt);

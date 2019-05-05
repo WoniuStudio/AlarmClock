@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include "AboutDlg.h"
 #include "NowTimeDlg.h"
+#include "SettingDlg.h"
 
 AlarmClock::AlarmClock(QWidget *parent)
 	: QDialog(parent)
@@ -322,11 +323,14 @@ void AlarmClock::OnBtnMin()
 ************************************/
 void AlarmClock::OnBtnAbout()
 {
-	AboutDlg aboutDlg(this);
-	aboutDlg.setModal(true);
-	aboutDlg.setWindowTitle("关于");
-	aboutDlg.ui.label1->setText("作者：蜗牛201\r\n版本：1.1.0\r\n发布日期：2019/04/24\r\n微信公号：码农code之路");
-	aboutDlg.exec();
+// 	AboutDlg aboutDlg(this);
+// 	aboutDlg.setModal(true);
+// 	aboutDlg.setWindowTitle("关于");
+// 	aboutDlg.ui.label1->setText("作者：蜗牛201\r\n版本：1.1.0\r\n发布日期：2019/04/24\r\n微信公号：码农code之路");
+// 	aboutDlg.exec();
+
+	SettingDlg settingDlg;
+	settingDlg.exec();
 }
 
 /************************************

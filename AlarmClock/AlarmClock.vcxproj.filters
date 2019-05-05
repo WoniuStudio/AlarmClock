@@ -51,6 +51,9 @@
     <ClCompile Include="AutoStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SettingDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="AlarmClock.h">
@@ -65,6 +68,9 @@
     <QtMoc Include="NowTimeDlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="SettingDlg.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="AlarmClock.ui">
@@ -77,6 +83,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="NowTimeDlg.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SettingDlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
