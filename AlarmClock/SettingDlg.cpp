@@ -1,4 +1,5 @@
 #include "SettingDlg.h"
+#include <QDebug>
 
 SettingDlg::SettingDlg(QWidget *parent)
 	: QDialog(parent)
@@ -15,6 +16,17 @@ SettingDlg::SettingDlg(QWidget *parent)
 
 	connect(ui.btnSetting, &QToolButton::clicked, this, &SettingDlg::OnBaseSetting);
 	connect(ui.btnAbout, &QToolButton::clicked, this, &SettingDlg::OnAbout);
+
+	connect(ui.checkBox, &QCheckBox::stateChanged, this, &SettingDlg::OnCheckBox);
+
+	if (IsAutoStart())
+	{
+		ui.checkBox->setChecked(true);
+	}
+	else
+	{
+		ui.checkBox->setChecked(false);
+	}
 }
 
 SettingDlg::~SettingDlg()
@@ -29,4 +41,18 @@ void SettingDlg::OnBaseSetting()
 void SettingDlg::OnAbout()
 {
 	ui.stackedWidget->setCurrentIndex(1);
+}
+
+
+void SettingDlg::OnCheckBox(int state)
+{
+	qDebug() << state;
+	if (state == 0) //取消选中
+	{
+		DelAutoStart();
+	}
+	else if (state == 2) //选中
+	{
+		SetAutoStart();
+	}
 }

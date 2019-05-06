@@ -1,7 +1,7 @@
 # AlarmClock
 PC Alarm Clock，using C++/Qt  development
 
-# WnStock
+# AlarmClock
 WnStock是个开源的闹钟软件，使用QT5.9+vs2017开发。
 
 ### 功能列表如下：

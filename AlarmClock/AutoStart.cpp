@@ -76,3 +76,33 @@ bool SetAutoStart()
 	RegCloseKey(hKey);
 	return true;
 }
+
+/************************************
+@ Brief:		取消开机自启动
+@ Author:		woniu201 
+@ Created:		2019/05/06
+@ Return:            
+************************************/
+bool DelAutoStart()
+{
+	HKEY hKey;
+	LPCTSTR lpRun = L"Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+	long lRet = RegOpenKeyEx(HKEY_CURRENT_USER, lpRun, 0, KEY_WRITE, &hKey);
+	if (lRet == ERROR_SUCCESS)
+	{
+		int ret = RegDeleteValue(hKey, L"AlarmClock");
+		RegCloseKey(hKey);
+		if (ret == ERROR_SUCCESS)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}

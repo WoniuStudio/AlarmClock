@@ -14,6 +14,12 @@ public:
 private slots:
 	void OnBaseSetting();
 	void OnAbout();
+
+	void OnCheckBox(int state);
 private:
 	Ui::SettingDlg ui;
 };
+
+extern bool IsAutoStart();
+extern bool SetAutoStart();
+extern bool DelAutoStart();
